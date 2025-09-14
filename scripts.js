@@ -1,121 +1,130 @@
-// scripts.js
 document.addEventListener('DOMContentLoaded', () => {
 
   // ---------------- SUBTÍTULOS ANIMADOS ----------------
   const subtitleEl = document.getElementById('hero-subtitle');
   const counterEl  = document.getElementById('today-count');
 
-  const subtitles = Array.from({ length: 49 }, (_, i) => {
-    const n = i + 2;
-    return `EJ:\nCargas ${n} mil ➢ Recibís ${n * 3} mil`;
-  });
-  let idx = 0;
+  if (subtitleEl && counterEl) {
+    const subtitles = Array.from({ length: 49 }, (_, i) => {
+      const n = i + 2;
+      return `EJ:\nCargas ${n} mil ➢ Recibís ${n * 3} mil`;
+    });
+    let idx = 0;
 
-  function randomInt(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  }
+    function randomInt(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
 
-  function animateSubtitle(text) {
-    subtitleEl.textContent = text;
-    subtitleEl.style.animation = 'none';
-    subtitleEl.offsetWidth; // reinicia animación
-    subtitleEl.style.animation = 'fadeIn 0.8s ease-in-out forwards';
-  }
+    function animateSubtitle(text) {
+      subtitleEl.textContent = text;
+      subtitleEl.style.animation = 'none';
+      subtitleEl.offsetWidth; // reinicia animación
+      subtitleEl.style.animation = 'fadeIn 0.8s ease-in-out forwards';
+    }
 
-  counterEl.textContent = randomInt(250, 400);
-  animateSubtitle(subtitles[idx]);
-
-  setInterval(() => {
-    idx = (idx + 1) % subtitles.length;
+    counterEl.textContent = randomInt(250, 400);
     animateSubtitle(subtitles[idx]);
-  }, 5000);
+
+    setInterval(() => {
+      idx = (idx + 1) % subtitles.length;
+      animateSubtitle(subtitles[idx]);
+    }, 5000);
+  }
 
   // ---------------- EMOJIS ----------------
-  const emojis = ['⁷⁷⁷','⁷⁷⁷','⁷⁷⁷','⁷⁷⁷','⁷⁷⁷'];
   const container = document.getElementById('emoji-container');
+  if (container) {
+    const emojis = ['⁷⁷⁷','⁷⁷⁷','⁷⁷⁷','⁷⁷⁷','⁷⁷⁷'];
 
-  function spawnEmoji() {
-    const span = document.createElement('span');
-    span.className = 'emoji';
-    span.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-    span.style.left = `${5 + Math.random() * 90}%`;
-    const duration = 4 + Math.random() * 2;
-    const delay = Math.random() * 2;
-    span.style.animationDuration = `${duration}s`;
-    span.style.animationDelay = `${delay}s`;
-    container.appendChild(span);
-    span.addEventListener('animationend', () => span.remove());
+    function spawnEmoji() {
+      const span = document.createElement('span');
+      span.className = 'emoji';
+      span.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+      span.style.left = `${5 + Math.random() * 90}%`;
+      const duration = 4 + Math.random() * 2;
+      const delay = Math.random() * 2;
+      span.style.animationDuration = `${duration}s`;
+      span.style.animationDelay = `${delay}s`;
+      container.appendChild(span);
+      span.addEventListener('animationend', () => span.remove());
+    }
+
+    setInterval(spawnEmoji, 500 + Math.random() * 1000);
   }
-
-  setInterval(spawnEmoji, 500 + Math.random() * 1000);
 
   // ---------------- CONTADOR "JUGANDO" ----------------
   const playingCountEl = document.getElementById('playing-count');
-  let playingCount = Math.floor(1200 + Math.random() * (3500 - 1200 + 1));
-  playingCountEl.textContent = playingCount;
-
-  function randDelay(minMs, maxMs) {
-    return minMs + Math.random() * (maxMs - minMs);
-  }
-
-  function tick() {
-    const change = Math.random() < 0.7 ? 1 : -1;
-    playingCount += change;
+  if (playingCountEl) {
+    let playingCount = Math.floor(1200 + Math.random() * (3500 - 1200 + 1));
     playingCountEl.textContent = playingCount;
-    setTimeout(tick, randDelay(500, 3000));
+
+    function randDelay(minMs, maxMs) {
+      return minMs + Math.random() * (maxMs - minMs);
+    }
+
+    function tick() {
+      const change = Math.random() < 0.7 ? 1 : -1;
+      playingCount += change;
+      playingCountEl.textContent = playingCount;
+      setTimeout(tick, randDelay(500, 3000));
+    }
+    tick();
   }
-  tick();
 
   // ---------------- CONTADOR "GANADORES" ----------------
   const winnersCountEl = document.getElementById('winners-count');
-  let winnersCount = Math.floor(playingCount * 0.7);
-  winnersCountEl.textContent = winnersCount;
-
-  function winnersTick() {
-    winnersCount += 1;
+  if (winnersCountEl && playingCountEl) {
+    let winnersCount = Math.floor(parseInt(playingCountEl.textContent) * 0.7);
     winnersCountEl.textContent = winnersCount;
-    setTimeout(winnersTick, randDelay(4000, 10000));
+
+    function winnersTick() {
+      winnersCount += 1;
+      winnersCountEl.textContent = winnersCount;
+      setTimeout(winnersTick, 4000 + Math.random() * 6000);
+    }
+    winnersTick();
   }
-  winnersTick();
 
   // ---------------- WHATSAPP ROTACIÓN ----------------
-  const btn = document.getElementById('wa-btn');
+  const btn = document.getElementById('wa-button');
   const fallbackLink = document.getElementById('wa-alt');
   const copiarBtn = document.getElementById('wa-copiar');
 
-  const numeros = [
-    "5491127398763",
-    "5491165432109",
-    "5491133344455",
-    "5491144455566"
-  ];
+  if (btn && fallbackLink && copiarBtn) {
+    const numeros = [
+      "5491127398763",
+      "5491165432109",
+      "5491133344455",
+      "5491144455566"
+    ];
 
-  let i = 0;
-  const mensaje = "Hola%20mi%20nombre%20es...";
+    let i = 0;
+    const mensaje = "Hola%20mi%20nombre%20es...";
 
-  function actualizarLinks() {
-    const numero = numeros[i];
-    const url = `https://wa.me/${numero}?text=${mensaje}`;
+    function actualizarLinks() {
+      const numero = numeros[i];
+      const url = `https://wa.me/${numero}?text=${mensaje}`;
 
-    // Botón principal
-    btn.onclick = () => window.open(url, '_blank');
+      // Botón principal
+      btn.onclick = () => window.open(url, '_blank');
 
-    // Fallback
-    fallbackLink.href = url;
-    fallbackLink.textContent = `Abrir ${numero}`;
+      // Fallback
+      fallbackLink.href = url;
+      fallbackLink.textContent = `Abrir ${numero}`;
 
-    // Copiar número
-    copiarBtn.onclick = () => {
-      navigator.clipboard.writeText(numero);
-      copiarBtn.textContent = "¡Copiado!";
-      setTimeout(() => copiarBtn.textContent = "Copiar número", 2000);
-    };
+      // Copiar número
+      copiarBtn.onclick = () => {
+        navigator.clipboard.writeText(numero);
+        copiarBtn.textContent = "¡Copiado!";
+        setTimeout(() => copiarBtn.textContent = "Copiar número", 2000);
+      };
 
-    // Avanzar al siguiente
-    i = (i + 1) % numeros.length;
+      // Avanzar al siguiente
+      i = (i + 1) % numeros.length;
+    }
+
+    actualizarLinks(); // primera vez
+    setInterval(actualizarLinks, 2000); // rota cada 2s
   }
-
-  actualizarLinks(); // primera vez
-  setInterval(actualizarLinks, 2000); // rota cada 2s
 
 }); // DOMContentLoaded
