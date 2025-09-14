@@ -92,11 +92,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (btn && fallbackLink && copiarBtn) {
     const numeros = [
+      "5491140976763",
       "5491127398763",
-      "5491165432109",
-      "5491133344455",
-      "5491144455566"
+      "5491127398447"      
     ];
+
+
 
     let i = 0;
     const mensaje = "Hola%20mi%20nombre%20es...";
@@ -128,3 +129,4 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 }); // DOMContentLoaded
+
