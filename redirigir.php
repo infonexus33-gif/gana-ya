@@ -1,6 +1,7 @@
 <?php
 // Lista de números
-$numeros = ["5491111111111", "5491222222222", "5491333333333"];
+$numeros = ["5491140976763", "5491127398763", "5491127398447"];      
+     
 
 // Archivo para guardar contadores
 $file = "contador.json";
