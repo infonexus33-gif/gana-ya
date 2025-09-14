@@ -1,14 +1,13 @@
-
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="es">
 <head>
   <!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-K3WJ9ZL7');</script>
-<!-- End Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-K3WJ9ZL7');</script>
+  <!-- End Google Tag Manager -->
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Plataforma GANAYA</title>
@@ -40,9 +39,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </head>
 <body style="font-family: 'Montserrat', sans-serif;">
   <!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-K3WJ9ZL7"
-height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-K3WJ9ZL7"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
 
   <section class="hero-section">
     <!-- Fondo video -->
@@ -66,8 +65,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <h1>TE ESPERA TU</h1>
       <h2>BONUS TRIPLICA</h2>
 
-      <!-- Botón principal WhatsApp (href se setea por JS) -->
-      <a id="wa-button" href="#" class="btn-usuario" onclick="fbq('track', 'Contact');" target="_blank" rel="noopener">
+      <!-- Botón principal WhatsApp -->
+      <a id="wa-button" href="#" class="btn-usuario" onclick="redirigirWhatsapp(event);" target="_blank" rel="noopener">
         <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" class="icon-ws">
         PEDIR USUARIO
       </a>
@@ -75,7 +74,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <!-- Noscript (fallback si el usuario no ejecuta JS) -->
       <noscript>
         <p style="margin-top:12px;">
-          <a href="https://api.whatsapp.com/send?phone=5491127398353&text=Hola%20mi%20nombre%20es..." target="_blank" rel="noopener">
+          <a href="https://wa.me/5491140976763?text=Hola%20mi%20nombre%20es..." target="_blank" rel="noopener">
             Abrir WhatsApp
           </a>
         </p>
@@ -83,84 +82,75 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
   </section>
 
+  <!-- Fallback visible siempre -->
+  <div id="wa-fallback" style="position:fixed;bottom:16px;left:50%;transform:translateX(-50%);
+    background:rgba(0,0,0,0.8);color:#fff;padding:12px 16px;border-radius:12px;
+    font-family:Montserrat,sans-serif;font-size:14px;z-index:9999;display:flex;
+    align-items:center;gap:8px;text-align:center;">
+    <span>¿No te abrió WhatsApp? Probá la otra línea:</span>
+    <a id="wa-alt" href="https://wa.me/5491127398763?text=Hola%20mi%20nombre%20es..." target="_blank" rel="noopener"
+      style="color:#25D366;font-weight:700;text-decoration:none;">Abrir 5491127398763</a>
+    <button id="wa-copiar" style="background:#333;color:#fff;border:0;padding:6px 10px;border-radius:8px;cursor:pointer;">
+      Copiar número
+    </button>
+  </div>
+
+  <script src="scripts.js"></script>
+
+
+
   <script>
-    // ===== Config =====
-    const numeros = [
-      "5492233435964",
-      "5491127398353"
-      
-      // podés agregar más líneas acá
-    ];
-    const mensaje = "Hola, yo soy..."; // mensaje precargado en WhatsApp
+  // Números WhatsApp
+  const numerosWhatsapp = [
+    "5491140976763",
+    "5491127398763",
+    "5491127398447"
+  ];
 
-    // ===== Helpers de rotación =====
-    const keyIdx = "wa_idx_ganaya_v1";
+  const keyIdx = "wa_idx_ganaya_v2"; // mismo que el botón principal
+  const mensaje = "Hola mi nombre es...";
 
-    function nextIndex(len) {
-      const idx = parseInt(localStorage.getItem(keyIdx) || "0", 10);
-      const next = (idx + 1) % len;
-      localStorage.setItem(keyIdx, String(next));
-      return idx;
-    }
+  const waButton = document.getElementById("wa-button");
+  const waAlt = document.getElementById("wa-alt");
+  const waCopiar = document.getElementById("wa-copiar");
 
-    function makeApiLink(num) {
-      return `https://api.whatsapp.com/send?phone=${num}&text=${encodeURIComponent(mensaje)}`;
-    }
+  // Función para obtener el índice y avanzar
+  function getNextWhatsappIndex() {
+    let idx = parseInt(localStorage.getItem(keyIdx) || "0", 10);
+    const nextIdx = (idx + 1) % numerosWhatsapp.length;
+    localStorage.setItem(keyIdx, nextIdx);
+    return idx;
+  }
 
-    function pickNumber() {
-      // round-robin simple entre recargas
-      const idx = nextIndex(numeros.length);
-      return { idx, n: numeros[idx] };
-    }
+  // Función para abrir WhatsApp desde el botón principal
+  function redirigirWhatsapp(e) {
+    e.preventDefault();
+    const idx = getNextWhatsappIndex();
+    const url = `https://wa.me/${numerosWhatsapp[idx]}?text=${encodeURIComponent(mensaje)}`;
+    window.open(url, "_blank");
+    updateFallback(); // actualizar fallback al mismo número
+  }
 
-    // ===== Setup botón principal =====
-    const btn = document.getElementById("wa-button");
-    const actual = pickNumber(); // { idx, n }
-    btn.setAttribute("href", makeApiLink(actual.n));
+  waButton.addEventListener("click", redirigirWhatsapp);
 
-    // ===== Fallback SIEMPRE visible =====
-    // Contenedor
-    const fallbackDiv = document.createElement("div");
-    fallbackDiv.style.position = "fixed";
-    fallbackDiv.style.bottom = "16px";
-    fallbackDiv.style.left = "50%";
-    fallbackDiv.style.transform = "translateX(-50%)";
-    fallbackDiv.style.background = "rgba(0,0,0,0.8)";
-    fallbackDiv.style.color = "#fff";
-    fallbackDiv.style.padding = "12px 16px";
-    fallbackDiv.style.borderRadius = "12px";
-    fallbackDiv.style.fontFamily = "Montserrat, sans-serif";
-    fallbackDiv.style.fontSize = "14px";
-    fallbackDiv.style.zIndex = "9999";
-    fallbackDiv.style.display = "flex";
-    fallbackDiv.style.alignItems = "center";
-    fallbackDiv.style.gap = "8px";
-    fallbackDiv.style.textAlign = "center";
+  // Función para actualizar el fallback
+  function updateFallback() {
+    const idx = parseInt(localStorage.getItem(keyIdx) || "0", 10);
+    const nextIdx = (idx + 1) % numerosWhatsapp.length; // mostrar siguiente
+    waAlt.href = `https://wa.me/${numerosWhatsapp[nextIdx]}?text=${encodeURIComponent(mensaje)}`;
+    waAlt.textContent = `Abrir ${numerosWhatsapp[nextIdx]}`;
+  }
 
-    // Número alternativo = siguiente en la lista
-    let altIndex = (actual.idx + 1) % numeros.length;
-    let altNum = numeros[altIndex];
+  // Copiar número del fallback
+  waCopiar.addEventListener("click", () => {
+    const num = waAlt.textContent.replace("Abrir ", "");
+    navigator.clipboard.writeText(num);
+  });
 
-    fallbackDiv.innerHTML = `
-      <span>¿No te abrió WhatsApp? Probá la otra línea:</span>
-      <a id="wa-alt" href="${makeApiLink(altNum)}" target="_blank" rel="noopener" style="color:#25D366; font-weight:700; text-decoration:none;">
-        Abrir ${altNum}
-      </a>
-      <button id="wa-copiar" style="background:#333; color:#fff; border:0; padding:6px 10px; border-radius:8px; cursor:pointer;">
-        Copiar número
-      </button>
-    `;
+  // Inicializar fallback al cargar
+  updateFallback();
+</script>
 
-    document.body.appendChild(fallbackDiv);
-
-    // Copiar al portapapeles
-    document.getElementById("wa-copiar").addEventListener("click", () => {
-      navigator.clipboard.writeText(altNum);
-    });
-
-
-  </script>
 
 </body>
 </html>
-```
