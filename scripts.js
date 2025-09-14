@@ -78,44 +78,57 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   winnersTick();
 
-  // ---------------- WHATSAPP ----------------
-  const waButton = document.getElementById("wa-button");
-  const waAlt = document.getElementById("wa-alt");
-  const waCopiar = document.getElementById("wa-copiar");
+// ---------------- WHATSAPP ----------------
+const waButton = document.getElementById("wa-button");
+const waAlt = document.getElementById("wa-alt");
+const waCopiar = document.getElementById("wa-copiar");
 
-  const numerosWhatsapp = [
-    "5491127398763",
-    "5491127398447",
-    "5491140976763"
-  ];
-  const mensaje = "Hola mi nombre es...";
-  const keyIdx = "wa_idx_ganaya_v2";
+const numerosWhatsapp = [
+  "5491127398763",
+  "5491127398447",
+  "5491140976763"
+];
+const mensaje = "Hola mi nombre es...";
+let idxWA = 0;
 
-  // Inicializar fallback al cargar
-  let idxWA = parseInt(localStorage.getItem(keyIdx) || "0", 10);
-  waAlt.href = `https://wa.me/${numerosWhatsapp[idxWA]}?text=${encodeURIComponent(mensaje)}`;
-  waAlt.textContent = `Abrir ${numerosWhatsapp[idxWA]}`;
+// Función para actualizar botón y fallback al mismo número
+function updateWhatsappLinks() {
+  const num = numerosWhatsapp[idxWA];
+  const url = `https://wa.me/${num}?text=${encodeURIComponent(mensaje)}`;
 
-  // Abrir WhatsApp y actualizar fallback
-  function redirigirWhatsapp(e) {
-    e.preventDefault();
-    let idx = parseInt(localStorage.getItem(keyIdx) || "0", 10);
-    const url = `https://wa.me/${numerosWhatsapp[idx]}?text=${encodeURIComponent(mensaje)}`;
-    window.open(url, "_blank");
-    idx = (idx + 1) % numerosWhatsapp.length;
-    localStorage.setItem(keyIdx, idx);
-    waAlt.href = `https://wa.me/${numerosWhatsapp[idx]}?text=${encodeURIComponent(mensaje)}`;
-    waAlt.textContent = `Abrir ${numerosWhatsapp[idx]}`;
-  }
+  // Botón principal
+  waButton.setAttribute("href", url);
 
-  waButton.addEventListener("click", redirigirWhatsapp);
+  // Fallback
+  waAlt.href = url;
+  waAlt.textContent = `Abrir ${num}`;
+}
 
-  // Copiar número del fallback
-  waCopiar.addEventListener("click", () => {
-    const num = waAlt.textContent.replace("Abrir ", "");
-    navigator.clipboard.writeText(num);
-  });
+// Rotar automáticamente cada 2s
+setInterval(() => {
+  idxWA = (idxWA + 1) % numerosWhatsapp.length;
+  updateWhatsappLinks();
+}, 2000);
+
+// Inicializar al cargar
+updateWhatsappLinks();
+
+// Click explícito en el botón (abre el número actual)
+function redirigirWhatsapp(e) {
+  e.preventDefault();
+  const num = numerosWhatsapp[idxWA];
+  const url = `https://wa.me/${num}?text=${encodeURIComponent(mensaje)}`;
+  window.open(url, "_blank");
+}
+waButton.addEventListener("click", redirigirWhatsapp);
+
+// Copiar número del fallback
+waCopiar.addEventListener("click", () => {
+  const num = waAlt.textContent.replace("Abrir ", "");
+  navigator.clipboard.writeText(num);
+});
 
 }); // DOMContentLoaded
+
 
 
