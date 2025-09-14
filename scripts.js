@@ -78,12 +78,11 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   winnersTick();
 
-document.addEventListener('DOMContentLoaded', () => {
+  // ---------------- WHATSAPP ROTACIÓN ----------------
   const btn = document.getElementById('wa-btn');
   const fallbackLink = document.getElementById('wa-alt');
   const copiarBtn = document.getElementById('wa-copiar');
 
-  // Números que rotan
   const numeros = [
     "5491127398763",
     "5491165432109",
@@ -94,7 +93,6 @@ document.addEventListener('DOMContentLoaded', () => {
   let i = 0;
   const mensaje = "Hola%20mi%20nombre%20es...";
 
-  // Función para actualizar botón y fallback
   function actualizarLinks() {
     const numero = numeros[i];
     const url = `https://wa.me/${numero}?text=${mensaje}`;
@@ -117,16 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
     i = (i + 1) % numeros.length;
   }
 
-  // Primera actualización inmediata
-  actualizarLinks();
-
-  // Rotar cada 2 segundos
-  setInterval(actualizarLinks, 2000);
-});
-
+  actualizarLinks(); // primera vez
+  setInterval(actualizarLinks, 2000); // rota cada 2s
 
 }); // DOMContentLoaded
-
-
-
-
