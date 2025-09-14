@@ -84,9 +84,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const waCopiar = document.getElementById("wa-copiar");
 
   const numerosWhatsapp = [
-    "5491140976763",
     "5491127398763",
-    "5491127398447"
+    "5491127398447",
+    "5491140976763"
   ];
   const mensaje = "Hola mi nombre es...";
   const keyIdx = "wa_idx_ganaya_v2";
@@ -117,4 +117,5 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
 }); // DOMContentLoaded
+
 
