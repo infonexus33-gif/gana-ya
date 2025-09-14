@@ -78,57 +78,55 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   winnersTick();
 
-// ---------------- WHATSAPP ----------------
-const waButton = document.getElementById("wa-button");
-const waAlt = document.getElementById("wa-alt");
-const waCopiar = document.getElementById("wa-copiar");
+document.addEventListener('DOMContentLoaded', () => {
+  const btn = document.getElementById('wa-btn');
+  const fallbackLink = document.getElementById('wa-alt');
+  const copiarBtn = document.getElementById('wa-copiar');
 
-const numerosWhatsapp = [
-  "5491127398763",
-  "5491127398447",
-  "5491140976763"
-];
-const mensaje = "Hola mi nombre es...";
-let idxWA = 0;
+  // Números que rotan
+  const numeros = [
+    "5491127398763",
+    "5491165432109",
+    "5491133344455",
+    "5491144455566"
+  ];
 
-// Función para actualizar botón y fallback al mismo número
-function updateWhatsappLinks() {
-  const num = numerosWhatsapp[idxWA];
-  const url = `https://wa.me/${num}?text=${encodeURIComponent(mensaje)}`;
+  let i = 0;
+  const mensaje = "Hola%20mi%20nombre%20es...";
 
-  // Botón principal
-  waButton.setAttribute("href", url);
+  // Función para actualizar botón y fallback
+  function actualizarLinks() {
+    const numero = numeros[i];
+    const url = `https://wa.me/${numero}?text=${mensaje}`;
 
-  // Fallback
-  waAlt.href = url;
-  waAlt.textContent = `Abrir ${num}`;
-}
+    // Botón principal
+    btn.onclick = () => window.open(url, '_blank');
 
-// Rotar automáticamente cada 2s
-setInterval(() => {
-  idxWA = (idxWA + 1) % numerosWhatsapp.length;
-  updateWhatsappLinks();
-}, 2000);
+    // Fallback
+    fallbackLink.href = url;
+    fallbackLink.textContent = `Abrir ${numero}`;
 
-// Inicializar al cargar
-updateWhatsappLinks();
+    // Copiar número
+    copiarBtn.onclick = () => {
+      navigator.clipboard.writeText(numero);
+      copiarBtn.textContent = "¡Copiado!";
+      setTimeout(() => copiarBtn.textContent = "Copiar número", 2000);
+    };
 
-// Click explícito en el botón (abre el número actual)
-function redirigirWhatsapp(e) {
-  e.preventDefault();
-  const num = numerosWhatsapp[idxWA];
-  const url = `https://wa.me/${num}?text=${encodeURIComponent(mensaje)}`;
-  window.open(url, "_blank");
-}
-waButton.addEventListener("click", redirigirWhatsapp);
+    // Avanzar al siguiente
+    i = (i + 1) % numeros.length;
+  }
 
-// Copiar número del fallback
-waCopiar.addEventListener("click", () => {
-  const num = waAlt.textContent.replace("Abrir ", "");
-  navigator.clipboard.writeText(num);
+  // Primera actualización inmediata
+  actualizarLinks();
+
+  // Rotar cada 2 segundos
+  setInterval(actualizarLinks, 2000);
 });
 
+
 }); // DOMContentLoaded
+
 
 
 
