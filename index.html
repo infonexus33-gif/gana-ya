@@ -99,59 +99,7 @@
 
 
 
-  <script>
-  // Números WhatsApp
-  const numerosWhatsapp = [
-    "5491127398763",
-    "5491127398447",
-    "5491140976763"
-  ];
-
-  const keyIdx = "wa_idx_ganaya_v2"; // mismo que el botón principal
-  const mensaje = "Hola mi nombre es...";
-
-  const waButton = document.getElementById("wa-button");
-  const waAlt = document.getElementById("wa-alt");
-  const waCopiar = document.getElementById("wa-copiar");
-
-  // Función para obtener el índice y avanzar
-  function getNextWhatsappIndex() {
-    let idx = parseInt(localStorage.getItem(keyIdx) || "0", 10);
-    const nextIdx = (idx + 1) % numerosWhatsapp.length;
-    localStorage.setItem(keyIdx, nextIdx);
-    return idx;
-  }
-
-  // Función para abrir WhatsApp desde el botón principal
-  function redirigirWhatsapp(e) {
-    e.preventDefault();
-    const idx = getNextWhatsappIndex();
-    const url = `https://wa.me/${numerosWhatsapp[idx]}?text=${encodeURIComponent(mensaje)}`;
-    window.open(url, "_blank");
-    updateFallback(); // actualizar fallback al mismo número
-  }
-
-  waButton.addEventListener("click", redirigirWhatsapp);
-
-  // Función para actualizar el fallback
-  function updateFallback() {
-    const idx = parseInt(localStorage.getItem(keyIdx) || "0", 10);
-    const nextIdx = (idx + 1) % numerosWhatsapp.length; // mostrar siguiente
-    waAlt.href = `https://wa.me/${numerosWhatsapp[nextIdx]}?text=${encodeURIComponent(mensaje)}`;
-    waAlt.textContent = `Abrir ${numerosWhatsapp[nextIdx]}`;
-  }
-
-  // Copiar número del fallback
-  waCopiar.addEventListener("click", () => {
-    const num = waAlt.textContent.replace("Abrir ", "");
-    navigator.clipboard.writeText(num);
-  });
-
-  // Inicializar fallback al cargar
-  updateFallback();
-</script>
-
-
 </body>
 </html>
+
 
